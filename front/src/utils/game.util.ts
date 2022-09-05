@@ -1,22 +1,28 @@
 import { Element } from "../types/game.type"
 
-export const fire: Element = {
-  weekness: "water",
-  strength: "grass"
+
+export const gameTurn = (firstElement: Element, secondElement: Element) => {
+  if(firstElement.strength === secondElement.weakness) {
+    return firstElement.name
+  }
+
+  if(firstElement.weakness === secondElement.strength) {
+    return secondElement.name
+  }
+
+  if(firstElement.name === secondElement.name) {
+    return 'Match nul'
+  }
 }
 
-export const water: Element = {
-  weekness: "grass",
-  strength: "fire"
-}
+// const isFire = (element: string) => {
+//   return (element == 'fire' ? true : false)
+// }
 
-export const grass: Element = {
-  weekness: "fire",
-  strength: "water"
-}
+// const isWater = (element: string) => {
+//   return (element == 'water' ? true : false)
+// }
 
-export const gameElement = {
-  grass,
-  water,
-  fire
-}
+// const isGrass = (element: string) => {
+//   return (element == 'grass' ? true : false)
+// }

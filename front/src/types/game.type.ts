@@ -1,5 +1,6 @@
 export interface Element {
-  weekness: ElementType,
+  name: ElementType,
+  weakness: ElementType,
   strength: ElementType
 }
 
