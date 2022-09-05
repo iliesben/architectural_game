@@ -1,0 +1,17 @@
+{
+  "name": "chatt_app_with_socket.io",
+  "version": "1.0.0",
+  "description": "chat app create with nodejs and socket io",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js",
+    "start": "node app.js"
+  },
+  "author": "slordg__",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.0.1"
+  }
+}
