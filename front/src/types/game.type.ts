@@ -4,4 +4,4 @@ export interface Element {
   strength: ElementType
 }
 
-export type ElementType = "fire" | "water" | "grass"
+export type ElementType = "fire" | "water" | "grass" | "iron"

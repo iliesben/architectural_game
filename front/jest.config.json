@@ -1,6 +1,4 @@
-
 {
-    "setupFilesAfterEnv": ["jest-extended/all"],
     "testEnvironment": "node",
     "testMatch": ["**/?(*.)spec.ts?(x)"]
 }

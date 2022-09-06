@@ -1,28 +1,18 @@
 import { Element } from "../types/game.type"
 
-
-export const gameTurn = (firstElement: Element, secondElement: Element) => {
-  if(firstElement.strength === secondElement.weakness) {
-    return firstElement.name
-  }
-
-  if(firstElement.weakness === secondElement.strength) {
-    return secondElement.name
-  }
-
-  if(firstElement.name === secondElement.name) {
-    return 'Match nul'
+export const gameResult = (key: string) => {
+  switch (key) {
+    case "name":
+      return "Same"
+    case "strength":
+      return "Win"
+    case "weakness":
+      return "Lose"
   }
 }
 
-// const isFire = (element: string) => {
-//   return (element == 'fire' ? true : false)
-// }
-
-// const isWater = (element: string) => {
-//   return (element == 'water' ? true : false)
-// }
-
-// const isGrass = (element: string) => {
-//   return (element == 'grass' ? true : false)
-// }
+export const gameTurn = (firstElement: Element, secondElement: Element) => {
+  for (const [firstElement_key, firstElement_value] of Object.entries(firstElement)) {
+    if(firstElement_value === secondElement.name) return gameResult(firstElement_key)
+  }
+}
