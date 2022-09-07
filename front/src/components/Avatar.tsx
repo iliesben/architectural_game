@@ -10,6 +10,12 @@ interface Props {
 
 export const Avatar = ({ type, side }: Props) => <AvatarImg src={`src/assets/avatar/avatar${upperFirst(side)}${upperFirst(type)}.gif`} />;
 
+const Container = styled.div`
+  position: absolute;
+  top: 165px;
+  right: 430px;
+`;
+
 const AvatarImg = styled.img`
   opacity: 1;
   transition: all 0.25s ease-out;
