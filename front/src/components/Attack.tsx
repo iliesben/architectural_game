@@ -14,5 +14,5 @@ const AttackImg = styled.img`
   position: absolute;
   top: 0px;
   transform: scale(2);
-  filter: blur(1px);
+  filter: blur(0.75px);
 `;
