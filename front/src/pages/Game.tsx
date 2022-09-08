@@ -3,12 +3,20 @@ import React from "react";
 import styled from "styled-components";
 import { Arena } from '../components/Arena'
 import { Avatar } from "../components/Avatar";
+import { Attack } from "../components/Attack";
+import { FirstPlace, SecondPlace } from "../components/Place";
 
 export const Game = () => {
     return (
       <GameContainer>
         <Arena>
-          <Avatar />
+          <FirstPlace>
+            <Avatar type="fire" side="Back" />
+          </FirstPlace>
+          <SecondPlace>
+            <Avatar type="grass" side="Front" />
+            <Attack type="fire" />
+          </SecondPlace>
         </Arena>
       </GameContainer>
     );
