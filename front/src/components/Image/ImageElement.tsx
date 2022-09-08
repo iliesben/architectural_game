@@ -1,7 +1,11 @@
 import React from "react";
 
-export const ImageElement = (props: any) => {
+interface PropsImage {
+    source: string
+}
+
+export const ImageElement = ({ source }: PropsImage) => {
     return (
-        <img src={props.source} alt="" />
+        <img src={source} alt="" />
     );
 }

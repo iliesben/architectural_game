@@ -3,7 +3,5 @@ import React from "react";
 import { ContainerHome } from "../components/Container/ContainerHome";
 
 export const Home = () => {
-    return (
-        <ContainerHome />
-    );
-}
+  return <ContainerHome />;
+};

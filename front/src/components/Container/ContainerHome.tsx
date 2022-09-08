@@ -1,21 +1,16 @@
 import React from "react";
-import { TitleHome } from "../Text/TitleHome";
-import { ButtonCreateGame } from "../Button/ButtonCreateGame";
-import { ButtonJoinGame } from "../Button/ButtonJoinGame";
-import { ButtonTuto } from "../Button/ButtonTuto";
-import { ButtonHome } from "../Button/ButtonHome";
-
+import { Title } from "../Text/Title";
+import { ButtonColor } from "../Button/ButtonColor";
 
 export const ContainerHome = () => {
-    return (
-        <div className="flex flex-col justify-center items-center mt-40">
-            <ButtonHome />
-            <TitleHome />
-            <div className="flex flex-row flex-wrap justify-center items-center mt-10">
-                <ButtonCreateGame />
-                <ButtonJoinGame/>
-                <ButtonTuto />
-            </div>
-        </div>  
-);
-}
+  return (
+    <div className="flex flex-col justify-center items-center mt-40">
+      <Title content="Bienvenu sur le meilleur chifoumi de ta vie!" />
+      <div className="flex flex-row flex-wrap justify-center items-center mt-10">
+        <ButtonColor color="green" text="Créer une partie" />
+        <ButtonColor color="blue" text="Rejoindre une partie" />
+        <ButtonColor color="red" text="Voir le tuto" />
+      </div>
+    </div>
+  );
+};
