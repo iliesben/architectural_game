@@ -1,7 +1,8 @@
 import React from "react";
+import { ContainerTuto } from "../components/Container/ContainerTuto"
 
 export const Tuto = () => {
     return (
-        <h1>Tuto page</h1>
+        <ContainerTuto />
     );
 }
