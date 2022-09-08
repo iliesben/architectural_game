@@ -1,13 +1,13 @@
 - creer un salle (generate un lien avec un chemin specifique liée à un UUID)
-    - requete api vers le back pour reoindre la room (renvoi le lien) -> Done
+    - requete api vers le back pour reoindre la room (renvoi le lien) -> Done (back)
 
 - rejoindre une salle (mettre l'utilisateur dans la room du joueur 1  - "join room")
-    - (manuel) requete api vers le back avec le bon path pour rejoindre une room (renvoie le lien)  -> DONE
-    - limiter le nombre à 2 -> Done
+    - (manuel) requete api vers le back avec le bon path pour rejoindre une room (renvoie le lien)  -> DONE (back)
+    - limiter le nombre à 2 -> Done (back)
 
 - start  
     - timer 10s (parametre)
-    - au bout du timer le front renvoie les deux valeur des joueurs au back dans la room
+    - au bout du timer le front renvoie les deux valeur des j oueurs au back dans la room
     - serveur recupere les deux valeur et le renvoie au front la personne qui gagne (en utilisant la logique)
     - rajouter coté front un bouton "quit" qui permet de leave la room
     - au premier arrivé 3 (bouton pour relancer le game ou quitte la room)
