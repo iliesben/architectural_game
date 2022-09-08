@@ -1,39 +1,51 @@
-import Express, { json } from "express"
-import http from "http";
-import socket from "socket.io";
-import { LobbyCrud } from "../src/routes";
+import * as dotenv from 'dotenv'
+dotenv.config()
+import Express, { json } from 'express'
+import http from 'http';
+import socket from 'socket.io'
+import router from '../src/router'
+import cors from 'cors'
+
+const corsOptions = {
+  origin: '*',
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Accept',
+    'Origin',
+    'Cookie',
+    'Set-Cookie',
+    'Token'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST']
+};
 
 const app = Express();
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+const io = require('socket.io')(server);
 
-app.get('/join/:lobbyId', LobbyCrud.join)
-app.post('/create', LobbyCrud.create)
+app.use(json())
+app.use(cors(corsOptions));
+app.use('/api', router)
 
-// var nbr = 0;
 
+io.on('connection', (socket: any) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 
-// io.on("connection", (socket) => {
-//   console.log("a user connected");
-//   nbr++;
-//   console.log("Y a actuellement " + nbr + "connecter");
-//   socket.on("disconnect", () => {
-//     console.log("user disconnected");
-//     nbr--;
-//     console.log("Y a actuellement " + nbr + "connecter");
-//   });
+  socket.on('chat message', (msg: string) => {
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
+  });
+});
 
-//   socket.on("chat message", (msg) => {
-//     console.log("message: " + msg);
-//     io.emit("chat message", msg);
-//   });
-// });
+io.on('connection', (socket: any) => {
+  socket.broadcast.emit('hi');
+});
 
-// to send a message for everyone
-/*io.on("connection", (socket) => {
-  socket.broadcast.emit("hi");
-});*/
-
-server.listen(3000, () => {
-  console.log("listening on *:3000");
+server.listen(process.env.PORT || 3000, () => {
+  console.log(`listening on http://localhost:${process.env.PORT || 3000}`);
 });

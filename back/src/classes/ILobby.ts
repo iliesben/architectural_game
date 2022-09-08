@@ -1,17 +1,19 @@
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4} from 'uuid'
 import IPlayer from './IPlayer'
 
-class ILobby {
+export default class ILobby {
 
-  private uuid: string = uuidv4();
-  private players: IPlayer[]
+  public uuid: string = uuidv4()
+  public players: IPlayer[]
+  public url: string = `http://localhost:3000/lobby/${this.uuid}`
 
   constructor(players: IPlayer[]) {
     this.players = players
   }
 
-  private generateNewPlayer(name: string) {
-    const player = new IPlayer(name, '127.0.0.1');
-    this.players.push(player)
+  public addNewPlayer(player: IPlayer) {
+    if (this.players.length <= 1) {
+      this.players = [...this.players, player]
+    }
   }
 }
