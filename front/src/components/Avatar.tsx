@@ -1,20 +1,14 @@
 import React from "react"
+import { ElementType } from "@/types/game.type";
 import styled from "styled-components";
+interface Props {
+  type: ElementType;
+  side: "Front" | "Back"
+}
 
-export const Avatar = () => {
-
-  return (
-    <Container>
-      <AvatarImg src="src/assets/avatar/avatarGrass.gif" />
-    </Container>
-  );
+export const Avatar = ({ type, side }: Props) => {
+  return <AvatarImg src={`src/assets/avatar/avatar${side}${type}.gif`} />;
 };
-
-const Container = styled.div`
-  position: absolute;
-  top: 165px;
-  right: 430px;
-`;
 
 const AvatarImg = styled.img`
 `;
