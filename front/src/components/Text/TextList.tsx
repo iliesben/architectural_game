@@ -1,12 +1,18 @@
 import React from "react";
+import styled, { ColorsNames } from "styled-components";
 
 interface ProsTextList {
-  color: string;
+  color: ColorsNames;
   text: string;
 }
 
 export const TextList = ({ color, text }: ProsTextList) => {
   return (
-    <li className={`text-${color}-700 text-xl`}>{text}</li>
+    <Li color={color} className="text-xl">{text}</Li>
   );
 };
+
+
+const Li = styled("li")<{ color: ColorsNames }>`
+  color: ${({ theme, color }) => theme.colors[color][700]};
+`;
