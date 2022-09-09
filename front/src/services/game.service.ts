@@ -33,7 +33,8 @@ export const joinGame = (lobby: IRoom) => {
 
 export const chooseElement = (element: ElementType) : string => {
     let winnerName = ''
-    axios.post(api_path + '/lobby/chooseElement/' + ElementId.get(element))
+    // /lobby/:lobbyId/inGame
+    axios.post(api_path + '/lobby/uuid/inGame' + ElementId.get(element))
        .then((response) => {
         winnerName = response.data
       })
