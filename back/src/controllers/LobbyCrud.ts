@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import ILobby from '../classes/ILobby'
-import IPlayer from '../classes/IPlayer'
+import ILobby from '../models/ILobby'
+import IPlayer from '../models/IPlayer'
 import { GameResolution } from '../services/gameResolution'
 
 export class LobbyCrud {

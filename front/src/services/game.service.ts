@@ -1,27 +1,25 @@
 import { IPlayer } from "@/schema/IPlayer";
 import { IRoom } from "@/schema/IRoom";
 import axios from "axios";
-import { useNavigate } from "react-router";
 import { Element, ElementId, ElementType } from "../types/game.type"
 
-const navigate = useNavigate();
 const api_path  = 'http://localhost:3000'
 
-export const createGame = (player: IPlayer) : string => {
-    let path = ''
-    axios.post<IRoom>(api_path + '/create', player)
+export const createGame = async (player: IPlayer) : Promise<string> => {
+    console.log("i'm in")
+    return await axios.post(api_path + '/api/create', player)
       .then((response) => {
-        path = response.data.url
+        console.log(response.data.lobbyUuid)
+        return response.data.lobbyUuid
       })
       .catch((error) => {
         console.log(error);
-        return error;
+        return "error";
       });
-    return path
 };
 
 export const joinGame = (lobby: IRoom) => {
-    axios.post<IRoom>(api_path + '/lobby/' + lobby.uuid)
+    axios.post<IRoom>(api_path + '/api/lobby/' + lobby.uuid)
       .then((response) => {
         return response.data
       })
@@ -34,7 +32,7 @@ export const joinGame = (lobby: IRoom) => {
 export const chooseElement = (element: ElementType) : string => {
     let winnerName = ''
     // /lobby/:lobbyId/inGame
-    axios.post(api_path + '/lobby/uuid/inGame' + ElementId.get(element))
+    axios.post(api_path + '/api/lobby/:uuid/inGame' + ElementId.get(element))
        .then((response) => {
         winnerName = response.data
       })
@@ -43,9 +41,9 @@ export const chooseElement = (element: ElementType) : string => {
     return winnerName
 }
 
-export const quitGame = (lobby: IRoom) : boolean => {
+export const quitGame = (lobby: IRoom, lobbyId: string ) : boolean => {
     let bool = false
-    axios.post<IRoom>(api_path + '/quit/' + lobby.uuid)
+    axios.post<IRoom>(api_path + '/api/lobby/:' + lobbyId + '/quit')
       .then((response) => {
         bool = true
       })

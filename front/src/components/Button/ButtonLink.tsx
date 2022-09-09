@@ -4,8 +4,9 @@ import styled, { ColorsNames, css } from "styled-components";
 import  * as gameService  from "@/services/game.service";
 import { IPlayer } from "@/schema/IPlayer";
 import { IRoom } from "@/schema/IRoom";
-import * as io from 'socket.io-client';
+import io from 'socket.io-client';
 
+const socket = io(`http://localhost:3000`);
 
 interface ButtonLinkProps {
   link: string
@@ -17,32 +18,25 @@ interface ButtonLinkProps {
 export const ButtonLink = ({ link, color, text }: ButtonLinkProps) => {
 
   const navigate = useNavigate();
-  
-  // const createNewGame = async (link: string) => {
-
-  //   let path = gameService.createGame(player)
-  //   navigate(path)
-  // };
-
-  // const joinGame = async (lobby: IRoom) => {
-  //   let path = gameService.joinGame(lobby)
-  //   navigate('er')
-  // };
 
   const goTo = async (link: string) => {
     if(link === "/game") {
-      createNewGame({
-        name: "players1",
+      const uuid = await createNewGame({
+        name: "player1",
         nbWin: 0,
         currentChoice: "fire"})
+      // navigate(link + "/" + uuid)
+      navigate(link + "/" + uuid)
+      console.warn(uuid + "-------------")
+      socket.emit('join room', uuid)
     } else if(link === "/join") {
-      
+      let lobbyId="test"
+      socket.emit('join room', uuid)
     }
   }
 
-  function createNewGame(player: IPlayer) {
-    let path = gameService.createGame(player)
-    navigate(path)
+  async function createNewGame(player: IPlayer) {
+    return gameService.createGame(player).then((response) => response)
   }
 
   function joinGame(lobby: IRoom) {

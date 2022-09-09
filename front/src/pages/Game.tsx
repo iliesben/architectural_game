@@ -6,8 +6,19 @@ import { Avatar } from "../components/Avatar";
 import { Attack } from "../components/Attack";
 import { GameColumn } from "../components/Game/GameColumn";
 import { FirstPlace, SecondPlace } from "../components/Place";
+import { io } from "socket.io-client";
+import { IPlayer } from "@/schema/IPlayer";
+
+const socket = io(`http://localhost:3000`);
 
 export const Game = () => {
+
+    socket.on('current lobby', (players: IPlayer[]) => {
+        console.warn(players.length)
+        console.log('players ?', players);
+    });
+    const lobbyId = '64f134c7-385e-4df6-84f4-14b61118ae72';
+
     return (
       <>
         <Heading className="text-xl">Timer : </Heading>
@@ -42,7 +53,7 @@ export const Game = () => {
         <Heading 
             className="text-xl"
             onClick={() =>{
-                console.log("vous avez quitté le jeu")
+                socket.emit('leave room', "64f134c7-385e-4df6-84f4-14b61118ae72")
             }}
         >Quiter la partie</Heading>
       </>

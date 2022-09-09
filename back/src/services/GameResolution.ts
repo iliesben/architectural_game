@@ -1,4 +1,4 @@
-import IPlayer from '../classes/IPlayer'
+import IPlayer from '../models/IPlayer'
 
 export class GameResolution {
 
