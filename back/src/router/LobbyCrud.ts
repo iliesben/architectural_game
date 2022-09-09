@@ -4,14 +4,59 @@ import IPlayer from '../classes/IPlayer'
 
 export class LobbyCrud {
 
-  static lobbies: ILobby[] = []
+  private static lobbies: ILobby[] = []
+
+  // TO DO
+  static checkWhoIsTheWinner(players: IPlayer[]) {
+    return players
+  }
+
+  public static initSockets(sockets: any) {
+    sockets.on('connection', (socket: any) => {
+      socket.on('join room', (lobbyId: string) => {
+        socket.join(lobbyId)
+        const currentLoby = LobbyCrud.lobbies.find(lobby => lobby.uuid === lobbyId)
+        if (currentLoby) {
+          sockets.sockets.to(lobbyId).emit('current lobby', currentLoby.players);
+        }
+      });
+      
+      socket.on('leave room', (lobbyId: string) => {
+        socket.leave(lobbyId)
+        const currentLoby = LobbyCrud.lobbies.find(lobby => lobby.uuid === lobbyId)
+        if (currentLoby) {
+          sockets.sockets.to(lobbyId).emit('current lobby', currentLoby.players);
+        }
+      })
+      
+      socket.on('user choice', ({ lobbyId, player }: any) => {
+        const currentLobby = LobbyCrud.lobbies.find(lobby => lobby.uuid === lobbyId)
+        const currentLobbyIndex = LobbyCrud.lobbies.findIndex(lobby => lobby.uuid === lobbyId)
+        if (currentLobby) {
+          const currentPlayer = currentLobby.players.find(p => p.id === player.id)
+          if (currentPlayer) {
+            currentPlayer.setCurrentUserChoice(player.currentChoice)
+            const currentPlayerIndex = currentLobby.players.findIndex(p => p.id === player.id)
+            currentLobby.players.splice(currentPlayerIndex, 1, currentPlayer)
+            LobbyCrud.lobbies.splice(currentLobbyIndex, 1, currentLobby)
+            if (currentLobby.players.find(player => player.currentChoice === '')) {
+              return
+            }
+            // TO DO => CHECK WHO WIN THEN INCREMENT HIS "NBWIN" PROPERTY AND RETURN PLAYERS ARRAY HERE
+            sockets.sockets.to(lobbyId).emit('current lobby', this.checkWhoIsTheWinner(currentLobby.players));
+            // TO DO => REINITIALIZE PLAYERS PROPERTY "CURRENTCHOICE" FOR NEXT ROUND
+          }
+        }
+      })
+    });
+  }
 
   public static async create(req: Request, res: Response) {
     try {
       const player = new IPlayer(req.socket.remoteAddress as string, req.body.playerName, 'player1')
       const newLobby = new ILobby([player])
       LobbyCrud.lobbies = [...LobbyCrud.lobbies, newLobby]
-      return res.status(200).send({ lobbyUrl: newLobby.url })
+      return res.status(200).send({ lobbyUrl: newLobby.url, player })
     } catch (error) {
       res.send({ message: 'error', error })
     }
@@ -22,12 +67,13 @@ export class LobbyCrud {
       const lobbyId = req.params.lobbyId
       const currentLobby = LobbyCrud.lobbies.find(lobby => lobby.uuid === lobbyId)
       if (currentLobby) {
-        currentLobby.addNewPlayer(new IPlayer(
+        const newPlayer = new IPlayer(
           req.socket.remoteAddress as string,
           req.body.playerName,
           `player${currentLobby.players.length + 1}`
-        ))
-        return res.status(200).send({ lobbyUrl: currentLobby.url })
+        )
+        currentLobby.addNewPlayer(newPlayer)
+        return res.status(200).send({ lobbyUrl: currentLobby.url, player: newPlayer })
       }
       return res.status(404).send({ message: 'error', error: 'Lobby not found' })
     } catch (error) {

@@ -1,8 +1,8 @@
 export default class IPlayer {
 
   private ip: string
-  private name: string
-  private id: string
+  public name: string
+  public id: string
   public nbWin: number = 0
   public currentChoice: string = ''
 
