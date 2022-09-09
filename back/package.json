@@ -1,5 +1,5 @@
 {
-  "name": "chatt_app_with_socket.io",
+  "name": "Chifoumi socket",
   "version": "1.0.0",
   "description": "chat app create with nodejs and socket io",
   "main": "app.js",
@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.19",
     "socket.io": "^4.0.1",
+    "ts-node": "^10.9.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

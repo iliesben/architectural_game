@@ -4,10 +4,10 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { Element, ElementId, ElementType } from "../types/game.type"
 
-const navigate = useNavigate();
 const api_path  = 'http://localhost:3000'
 
 export const createGame = (player: IPlayer) : string => {
+  const navigate = useNavigate();
     let path = ''
     axios.post<IRoom>(api_path + '/create', player)
       .then((response) => {
