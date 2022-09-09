@@ -1,8 +1,25 @@
 import React from "react";
 import { Title } from "../Text/Title";
 import { ButtonColor } from "../Button/ButtonColor";
+import  * as gameService  from "@/services/game.service";
+import { IPlayer } from "@/schema/IPlayer";
+import { useNavigate } from "react-router-dom";
+import { IRoom } from "@/schema/IRoom";
 
 export const ContainerHome = () => {
+  const navigate = useNavigate();
+  
+  const createNewGame = async (player: IPlayer) => {
+    let path = gameService.createGame(player)
+    navigate(path)
+  };
+
+  const joinGame = async (lobby: IRoom) => {
+    let path = gameService.joinGame(lobby)
+    navigate(path)
+  };
+
+
   return (
     <div className="flex flex-col justify-center items-center mt-40">
       <Title content="Bienvenu sur le meilleur chifoumi de ta vie!" />
