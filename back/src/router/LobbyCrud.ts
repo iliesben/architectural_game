@@ -1,14 +1,19 @@
 import { Request, Response } from 'express'
 import ILobby from '../classes/ILobby'
 import IPlayer from '../classes/IPlayer'
+import { GameResolution } from '../services/gameResolution'
 
 export class LobbyCrud {
 
   private static lobbies: ILobby[] = []
 
-  // TO DO
   static checkWhoIsTheWinner(players: IPlayer[]) {
+    GameResolution.playTurn(players)
     return players
+  }
+
+  static resetPlayersChoices(players: IPlayer[]){
+    GameResolution.prepareForNextRound(players)
   }
 
   public static initSockets(sockets: any) {
@@ -42,9 +47,8 @@ export class LobbyCrud {
             if (currentLobby.players.find(player => player.currentChoice === '')) {
               return
             }
-            // TO DO => CHECK WHO WIN THEN INCREMENT HIS "NBWIN" PROPERTY AND RETURN PLAYERS ARRAY HERE
             sockets.sockets.to(lobbyId).emit('current lobby', this.checkWhoIsTheWinner(currentLobby.players));
-            // TO DO => REINITIALIZE PLAYERS PROPERTY "CURRENTCHOICE" FOR NEXT ROUND
+            sockets.sockets.to(lobbyId).emit('current lobby', this.resetPlayersChoices(currentLobby.players));
           }
         }
       })

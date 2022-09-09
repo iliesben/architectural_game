@@ -12,7 +12,7 @@ export default class IPlayer {
     this.id = id
   }
 
-  private incrementNbWin() {
+  public incrementNbWin() {
     this.nbWin++
   }
 
