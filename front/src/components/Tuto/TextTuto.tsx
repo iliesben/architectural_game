@@ -7,8 +7,8 @@ export const TextTuto = () => {
   return (
     <div className="flex flex-wrap flex-row justify-center w-full">
       <div className="max-w-lg my-20 mx-10">
-        <TextContent text="Bon vasy je t'explique rapidement." />
-        <TextContent text="En gros tu as trois personnages, jusqu'à la tu suis ?" />
+        <TextContent text="Bon vas-y je t'explique rapidement." />
+        <TextContent text="En gros tu as trois personnages :" />
         <div className="flex flex-row justify-around items-center mt-10">
           <ImageElement source="src/assets/water.gif" />
           <ImageElement source="src/assets/fire.gif" />
@@ -16,8 +16,8 @@ export const TextTuto = () => {
         </div>
       </div>
       <div className="max-w-lg my-20 mx-10">
-        <TextContent text="A tour de rôle tu vas devoir choisir un des trois éléments présenté." />
-        <TextContent text="Au décompte, vos choix vont être révélés. Pour info:" />
+        <TextContent text="A tour de rôle tu vas devoir choisir un des trois éléments présentés." />
+        <TextContent text="Au décompte, vos choix vont être révélés. Pour info :" />
         <ul className="mt-10 text-center">
           <TextList color="red" text="Le feu bas l'herbe" />
           <TextList color="blue" text="L'eau bas le feu" />

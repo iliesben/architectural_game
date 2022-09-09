@@ -1,14 +1,14 @@
 import React from "react";
 import { Title } from "../Text/Title";
-import { TextTuto } from "../Tuto/TextTuto";
 import { ButtonHome } from "../Button/ButtonHome";
+import { FormCreate } from "../Form/FormCreate";
 
-export const ContainerTuto = () => {
+export const ContainerCreate = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-40">
       <ButtonHome link="/" text="Retour à l'accueil" />
-      <Title content="Quoi ? Pour de vrai tu connais pas le chifoumi ?" />
-      <TextTuto />
+      <Title content="Pour créer une salle, rentre ton pseudo et clic sur le bouton!" />
+      <FormCreate />
     </div>
   );
 };
