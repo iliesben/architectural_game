@@ -4,7 +4,6 @@ import Express, { json } from 'express'
 import http from 'http'
 import cors from 'cors'
 import Websocket from './services/socket'
-import { LobbyCrud } from './router/LobbyCrud'
 
 const corsOptions = {
   origin: '*',
@@ -19,7 +18,9 @@ const corsOptions = {
   ],
   credentials: true,
   methods: ['GET', 'POST']
-}
+};
+
+import { LobbyCrud } from './controllers/LobbyCrud'
 
 const app = Express()
 const server = http.createServer(app)
