@@ -52,7 +52,7 @@ export class LobbyCrud {
       const player = new IPlayer(req.socket.remoteAddress as string, req.body.playerName, 'player1')
       const newLobby = new ILobby([player])
       LobbyCrud.lobbies = [...LobbyCrud.lobbies, newLobby]
-      return res.status(200).send({ lobbyUrl: newLobby.url, player })
+      return res.status(200).send({ lobbyUuid: newLobby.uuid, player })
     } catch (error) {
       res.send({ message: 'error', error })
     }

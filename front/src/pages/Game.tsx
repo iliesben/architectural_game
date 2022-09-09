@@ -39,7 +39,12 @@ export const Game = () => {
           </GameColumn>
           <GameColumn>Score</GameColumn>
         </GameContainer>
-        <Heading className="text-xl">Quiter la partie</Heading>
+        <Heading 
+            className="text-xl"
+            onClick={() =>{
+                console.log("vous avez quitté le jeu")
+            }}
+        >Quiter la partie</Heading>
       </>
     );
 }

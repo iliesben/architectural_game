@@ -19,9 +19,9 @@ export const TextTuto = () => {
         <TextContent text="A tour de rôle tu vas devoir choisir un des trois éléments présenté." />
         <TextContent text="Au décompte, vos choix vont être révélés. Pour info:" />
         <ul className="mt-10 text-center">
-          <TextList color="red" text="Le feu bas l'herbe" />
-          <TextList color="blue" text="L'eau bas le feu" />
-          <TextList color="green" text="Et l'herbe bas l'eau" />
+          <TextList color="red" text="Le feu bat l'herbe" />
+          <TextList color="blue" text="L'eau bat le feu" />
+          <TextList color="green" text="Et l'herbe bat l'eau" />
         </ul>
       </div>
     </div>
