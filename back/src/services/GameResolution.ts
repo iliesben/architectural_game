@@ -8,13 +8,15 @@ export class GameResolution {
     });
   }
 
-  // TODO : check for refacto (clean if else if)
   public static playTurn(players: IPlayer[]) {
-    if(this.defineWeakness(players[0].currentChoice) == players[1].currentChoice) {
+    if (this.defineWeakness(players[0].currentChoice) == players[1].currentChoice) {
       players[1].incrementNbWin()
     } else if (this.defineWeakness(players[1].currentChoice) == players[0].currentChoice) {
       players[0].incrementNbWin()
     }
+    players[0].resetCurrentChoice()
+    players[1].resetCurrentChoice()
+    return players
   }
 
   private static defineWeakness(type: string) {

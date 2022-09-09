@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 import Express, { json } from 'express'
 import http from 'http'
-import router from '../src/router'
 import cors from 'cors'
 import Websocket from './services/socket'
 import { LobbyCrud } from './router/LobbyCrud'
@@ -33,6 +32,7 @@ app.use(cors(corsOptions))
 LobbyCrud.initSockets(io)
 app.post('/api/create', LobbyCrud.create)
 app.post('/api/lobby/:lobbyId', LobbyCrud.join)
+app.post('/api/lobby/:lobbyId/quit', LobbyCrud.quit)
 
 server.listen(process.env.PORT || 3000, () => {
   console.log(`listening on http://localhost:${process.env.PORT || 3000}`)

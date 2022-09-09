@@ -8,12 +8,7 @@ export class LobbyCrud {
   private static lobbies: ILobby[] = []
 
   static checkWhoIsTheWinner(players: IPlayer[]) {
-    GameResolution.playTurn(players)
-    return players
-  }
-
-  static resetPlayersChoices(players: IPlayer[]){
-    GameResolution.prepareForNextRound(players)
+    return GameResolution.playTurn(players)
   }
 
   public static initSockets(sockets: any) {
@@ -44,11 +39,8 @@ export class LobbyCrud {
             const currentPlayerIndex = currentLobby.players.findIndex(p => p.id === player.id)
             currentLobby.players.splice(currentPlayerIndex, 1, currentPlayer)
             LobbyCrud.lobbies.splice(currentLobbyIndex, 1, currentLobby)
-            if (currentLobby.players.find(player => player.currentChoice === '')) {
-              return
-            }
+            if (currentLobby.players.length < 2 || currentLobby.players.find(player => player.currentChoice === '')) return
             sockets.sockets.to(lobbyId).emit('current lobby', this.checkWhoIsTheWinner(currentLobby.players));
-            sockets.sockets.to(lobbyId).emit('current lobby', this.resetPlayersChoices(currentLobby.players));
           }
         }
       })
@@ -70,7 +62,7 @@ export class LobbyCrud {
     try {
       const lobbyId = req.params.lobbyId
       const currentLobby = LobbyCrud.lobbies.find(lobby => lobby.uuid === lobbyId)
-      if (currentLobby) {
+      if (currentLobby && currentLobby.players.length < 2) {
         const newPlayer = new IPlayer(
           req.socket.remoteAddress as string,
           req.body.playerName,
@@ -78,6 +70,26 @@ export class LobbyCrud {
         )
         currentLobby.addNewPlayer(newPlayer)
         return res.status(200).send({ lobbyUrl: currentLobby.url, player: newPlayer })
+      }
+      return currentLobby && currentLobby.players.length >= 2
+        ? res.status(404).send({ message: 'error', error: 'This lobby cannot contain more players' })
+        : res.status(404).send({ message: 'error', error: 'Lobby not found' })
+    } catch (error) {
+      res.send({ message: 'error', error })
+    }
+  }
+
+  public static async quit(req: Request, res: Response) {
+    try {
+      const lobbyId = req.params.lobbyId
+      const currentLobby = LobbyCrud.lobbies.find(lobby => lobby.uuid === lobbyId)
+      if (currentLobby) {
+        const currentPlayerIndex = currentLobby.players.findIndex(player => player.id === req.body.playerId)
+        if (currentPlayerIndex !== -1) {
+          currentLobby.players.splice(currentPlayerIndex, 1)
+          return res.status(200).send({ players: currentLobby.players })
+        }
+        return res.status(404).send({ message: 'error', error: 'Player not found' })
       }
       return res.status(404).send({ message: 'error', error: 'Lobby not found' })
     } catch (error) {

@@ -12,7 +12,7 @@ export default class ILobby {
   }
 
   public addNewPlayer(player: IPlayer) {
-    if (this.players.length <= 1) {
+    if (this.players.length < 2) {
       this.players = [...this.players, player]
     }
   }

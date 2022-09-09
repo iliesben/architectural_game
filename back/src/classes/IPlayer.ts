@@ -19,4 +19,8 @@ export default class IPlayer {
   public setCurrentUserChoice(currentChoice: string) {
     this.currentChoice = currentChoice
   }
+
+  public resetCurrentChoice() {
+    this.currentChoice = ''
+  }
 }
