@@ -13,11 +13,23 @@ export const Game = () => {
         <Heading className="text-xl">Timer : </Heading>
         <GameContainer className="flex flex-row">
           <GameColumn>Score</GameColumn>
-          <GameColumn className="basis-1/2">
+          <GameColumn column="half">
+            {/* <h3 className="text-xl h-20">Choisissez un élément</h3>
+            <div className="columns-3">
+              <div className="flex justify-center">
+                <img src="src/assets/water.gif" />
+              </div>
+              <div className="flex justify-center">
+                <img src="src/assets/fire.gif" />
+              </div>
+              <div className="flex justify-center">
+                <img src="src/assets/grass.gif" />
+              </div>
+            </div> */}
             <Arena>
               <FirstPlace>
                 <Avatar type="fire" side="Back" />
-                <Attack type="grass" />
+                <Attack type="fire" />
               </FirstPlace>
               <SecondPlace>
                 <Avatar type="water" side="Front" />
@@ -27,14 +39,13 @@ export const Game = () => {
           </GameColumn>
           <GameColumn>Score</GameColumn>
         </GameContainer>
-        <Heading className="text-xl">Timer : </Heading>
+        <Heading className="text-xl">Quiter la partie</Heading>
       </>
     );
 }
 
 const Heading = styled.div`
   margin: 2rem;
-  width: 100%;
   text-align: center;
 `;
 
