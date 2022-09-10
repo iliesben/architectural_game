@@ -39,7 +39,7 @@ const ChooseType = styled.div.attrs({
   className:
     "flex justify-center items-center flex-1 text-2xl font-semibold",
 })<{ color: ColorsNames}>`
-  height: 22rem;
+  height: 24rem;
   background: #0808087a;
   box-shadow: 0px 0px 8px -4px #000000;
   cursor: pointer;

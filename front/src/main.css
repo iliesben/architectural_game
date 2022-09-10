@@ -140,3 +140,8 @@ table {
   padding: 7px 0;
   background: transparent;
 }
+
+img, video {
+  max-width: none;
+  height: auto;
+}

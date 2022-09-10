@@ -1,5 +1,5 @@
 // recupere le socket si on rejoint, sinon créer un
-import React, { MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Arena } from "../components/Arena";
 import { Choose } from "../components/Choose";
@@ -8,7 +8,6 @@ import { Attack } from "../components/Attack";
 import { GameColumn } from "../components/Game/GameColumn";
 import { FirstPlace, SecondPlace } from "../components/Place";
 import { ElementType } from "@/types/game.type";
-import { ButtonHome } from "@/components/Button/ButtonHome";
 import { ButtonLink } from "@/components/Button/ButtonLink";
 
 export const Game = () => {
@@ -28,15 +27,15 @@ export const Game = () => {
             <div className="text-[11rem]">98</div>
           </div>
         </GameColumn>
-        <GameColumn column="half">
+        <GameColumn column="half" className="flex justify-center">
           {element ? (
             <Arena>
               <FirstPlace>
-                <Avatar type={element} side="Back" />
+                <Avatar type={element} side="back" />
                 {/* <Attack type="fire" /> */}
               </FirstPlace>
               <SecondPlace>
-                <Avatar type="water" side="Front" />
+                <Avatar type="water" side="front" />
                 <Attack type={element} />
               </SecondPlace>
             </Arena>
@@ -74,14 +73,3 @@ const ButtonContainer = styled.div`
 `;
 
 const GameContainer = styled.div``;
-
-const GameHeader = styled.div`
-  padding-inline: 3rem;
-  margin-top: 1rem;
-`;
-
-const GameContent = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
