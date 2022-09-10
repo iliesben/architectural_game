@@ -1,45 +1,63 @@
 // recupere le socket si on rejoint, sinon créer un
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Arena } from "../components/Arena";
+import { Choose } from "../components/Choose";
 import { Avatar } from "../components/Avatar";
 import { Attack } from "../components/Attack";
 import { GameColumn } from "../components/Game/GameColumn";
 import { FirstPlace, SecondPlace } from "../components/Place";
+import { ElementType } from "@/types/game.type";
+import { ButtonLink } from "@/components/Button/ButtonLink";
 
 export const Game = () => {
+  const [element, setElement] = useState<ElementType | undefined>()
+
+  const getElement = (elem: ElementType) => setElement(elem)
+
   return (
     <>
-      <Heading className="text-xl">Timer : </Heading>
+      <Heading className="text-xl">
+        {element ? "Timer" : "Choisissez un élément "}
+      </Heading>
       <GameContainer className="flex flex-row">
-        <GameColumn>Score</GameColumn>
-        <GameColumn column="half">
-          {/* <h3 className="text-xl h-20">Choisissez un élément</h3>
-            <div className="columns-3">
-              <div className="flex justify-center">
-                <img src="src/assets/water.gif" />
-              </div>
-              <div className="flex justify-center">
-                <img src="src/assets/fire.gif" />
-              </div>
-              <div className="flex justify-center">
-                <img src="src/assets/grass.gif" />
-              </div>
-            </div> */}
-          <Arena>
-            <FirstPlace>
-              <Avatar type="fire" side="Back" />
-              <Attack type="fire" />
-            </FirstPlace>
-            <SecondPlace>
-              <Avatar type="water" side="Front" />
-              <Attack type="grass" />
-            </SecondPlace>
-          </Arena>
+        <GameColumn>
+          <div className="flex justify-evenly flex-col h-full">
+            <h2 className="text-2xl">Sem</h2>
+            <div className="text-[11rem]">98</div>
+          </div>
         </GameColumn>
-        <GameColumn>Score</GameColumn>
+        <GameColumn column="half" className="flex justify-center">
+          {element ? (
+            <Arena>
+              <FirstPlace>
+                <Avatar type={element} side="back" />
+                {/* <Attack type="fire" /> */}
+              </FirstPlace>
+              <SecondPlace>
+                <Avatar type="water" side="front" />
+                <Attack type={element} />
+              </SecondPlace>
+            </Arena>
+          ) : (
+            <Choose onClick={getElement} />
+          )}
+        </GameColumn>
+        <GameColumn>
+          <div className="flex justify-evenly flex-col h-full">
+            <h2 className="text-2xl">Pierre</h2>
+            <div className="text-[11rem]">97</div>
+          </div>
+        </GameColumn>
       </GameContainer>
-      <Heading className="text-xl">Quiter la partie</Heading>
+      <ButtonContainer>
+        <ButtonLink
+          link="/"
+          text="Quitter la partie"
+          color="gray"
+          opacity="00"
+        />
+      </ButtonContainer>
     </>
   );
 };
@@ -49,15 +67,9 @@ const Heading = styled.div`
   text-align: center;
 `;
 
+const ButtonContainer = styled.div`
+  margin-top: 5rem;
+  text-align: center;
+`;
+
 const GameContainer = styled.div``;
-
-const GameHeader = styled.div`
-  padding-inline: 3rem;
-  margin-top: 1rem;
-`;
-
-const GameContent = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
