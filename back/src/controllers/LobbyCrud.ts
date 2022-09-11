@@ -4,8 +4,6 @@ import IPlayer from '../models/IPlayer'
 import { GameResolution } from '../services/GameResolution'
 import { find, values } from 'lodash'
 
-// TODO gérer la déconnexion du client comme ça je n'oublie pas
-
 interface ILobbies {
   [uuid: string]: ILobby
 }
@@ -19,18 +17,18 @@ export class LobbyCrud {
 
       socket.on('join room', (lobbyId: string) => {
         socket.join(lobbyId)
-        const currentLoby = LobbyCrud.lobbies[lobbyId]
+        const currentLobby = LobbyCrud.lobbies[lobbyId]
 
-        if (currentLoby) {
-          sockets.sockets.to(lobbyId).emit('current lobby', values(currentLoby.players));
+        if (currentLobby) {
+          sockets.sockets.to(lobbyId).emit('current lobby', values(currentLobby.players));
         }
       });
 
       socket.on('leave room', (lobbyId: string) => {
         socket.leave(lobbyId)
-        const currentLoby = LobbyCrud.lobbies[lobbyId]
-        if (currentLoby) {
-          sockets.sockets.to(lobbyId).emit('current lobby', values(currentLoby.players));
+        const currentLobby = LobbyCrud.lobbies[lobbyId]
+        if (currentLobby) {
+          sockets.sockets.to(lobbyId).emit('current lobby', values(currentLobby.players));
         }
       })
 
@@ -58,6 +56,24 @@ export class LobbyCrud {
         } else {
           sockets.sockets.to(lobbyId).emit('winner', GameResolution.playTurn(currentLobby.players))};
       })
+
+      socket.on('disconnect', () => {
+        const roomsMapIterator = socket.adapter.rooms.keys()
+        let lobbyId = ''
+
+        for (let i = 0; i < 2; i++) {
+          if (i === 1) lobbyId = roomsMapIterator.next().value
+          roomsMapIterator.next().value
+        }
+        const currentLobby = LobbyCrud.lobbies[lobbyId]
+        if (!currentLobby) return
+
+        const currentPlayer = find(currentLobby.players, player => player.ip === socket.conn.remoteAddress)
+        if (!currentPlayer) return
+
+        delete currentLobby.players[currentPlayer.id]
+        sockets.sockets.to(currentLobby.uuid).emit('current lobby', values(currentLobby.players));
+      });
     });
   }
 
