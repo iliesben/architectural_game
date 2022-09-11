@@ -95,7 +95,7 @@ export class LobbyCrud {
       const currentLobby = LobbyCrud.lobbies[lobbyId]
       const currentLobbyLength = Object.keys(currentLobby.players).length
 
-      if (currentLobby && currentLobbyLength) {
+      if (currentLobby && currentLobbyLength < 2) {
         const newPlayer = new IPlayer(
           req.socket.remoteAddress as string,
           req.body.name,
