@@ -1,20 +1,22 @@
 {
-  "name": "Chifoumi socket",
+  "name": "poke_shifoumi_api",
   "version": "1.0.0",
-  "description": "chat app create with nodejs and socket io",
+  "description": "poke shifoumi api",
   "main": "app.js",
   "scripts": {
     "test": "jest",
     "start": "nodemon --watch 'src' src/server.ts -L"
   },
-  "author": "slordg__",
+  "author": "iliesben",
   "license": "ISC",
   "dependencies": {
     "@types/cors": "^2.8.12",
+    "@types/lodash": "^4.14.185",
     "@types/uuid": "^8.3.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.19",
     "socket.io": "^4.0.1",
     "ts-node": "^10.9.1",

@@ -1,19 +1,23 @@
 import {v4 as uuidv4} from 'uuid'
 import IPlayer from './IPlayer'
 
+export interface IPlayers {
+  [id: string]: IPlayer
+}
+
 export default class ILobby {
 
   public uuid: string = uuidv4()
-  public players: IPlayer[]
-  public url: string = `http://localhost:3000/lobby/${this.uuid}`
+  public players: IPlayers
+  public url: string = `http://localhost:3030/lobby/${this.uuid}`
 
-  constructor(players: IPlayer[]) {
+  constructor(players: IPlayers) {
     this.players = players
   }
 
   public addNewPlayer(player: IPlayer) {
-    if (this.players.length < 2) {
-      this.players = [...this.players, player]
+    if (Object.keys(this.players).length < 2) {
+      this.players[player.id] = player
     }
   }
 }
