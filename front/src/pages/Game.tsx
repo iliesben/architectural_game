@@ -22,11 +22,11 @@ interface LocationState {
 export const Game = () => {
 
   const location = useLocation()
-  if (!location.state) return
+  if (!location.state) return <div className = "text-xl">Repasse par la home frérot</div>
   const { player: playerState, lobbyId } = location.state as LocationState;
 
   const socket = useContext(SocketContext);
-  if (!socket) return
+  if (!socket) return <div className="text-xl">Repasse par la home frérot</div>
 
   const [currentPlayer, setCurrentPlayer] = useState<IPlayer>(playerState)
   const [otherPlayer, setOtherPlayer] = useState<undefined | IPlayer>()
@@ -129,7 +129,7 @@ export const Game = () => {
       <ButtonContainer>
         <ButtonLink
           link="/"
-          text="Quitter la partie"
+          label="Quitter la partie"
           color="gray"
           opacity="00"
           onClick={() => socket.emit('leave room', lobbyId) }
