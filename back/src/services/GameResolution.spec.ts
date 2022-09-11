@@ -1,17 +1,19 @@
-import {describe, expect, test} from '@jest/globals';
-import IPlayer from '../classes/IPlayer';
-import { GameResolution } from './gameResolution';
+import IPlayer from '../models/IPlayer';
+import { GameResolution } from './GameResolution';
 
 describe('Test playTurn() function', () => {
 
   test('first player should win', () => {
-    let player1: IPlayer = new IPlayer('::1', 'player 1', '1')
-    let player2: IPlayer = new IPlayer('::1', 'player 2', '2')
+    const player1 = new IPlayer('::1', 'player 1', 'player1')
+    const player2 = new IPlayer('::1', 'player 2', 'player2')
 
     player1.setCurrentUserChoice('fire')
     player2.setCurrentUserChoice('grass')
 
-    const players = [player1, player2]
+    const players = {
+      [player1.id]: player1, 
+      [player2.id]: player2
+    }
 
     GameResolution.playTurn(players)
     expect(player1.nbWin).toEqual(1)
@@ -19,13 +21,16 @@ describe('Test playTurn() function', () => {
   })
 
   test('second player should win', () => {
-    let player1: IPlayer = new IPlayer('::1', 'player 1', '1')
-    let player2: IPlayer = new IPlayer('::1', 'player 2', '2')
+    const player1 = new IPlayer('::1', 'player 1', 'player1')
+    const player2 = new IPlayer('::1', 'player 2', 'player2')
 
     player1.setCurrentUserChoice('fire')
     player2.setCurrentUserChoice('water')
 
-    const players = [player1, player2]
+    const players = {
+      [player1.id]: player1, 
+      [player2.id]: player2
+    }
 
     GameResolution.playTurn(players)
     expect(player1.nbWin).toEqual(0)
