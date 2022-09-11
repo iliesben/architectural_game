@@ -1,6 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
 import IPlayer from '../models/IPlayer';
-import { GameResolution } from './gameResolution';
+import { GameResolution } from './GameResolution';
 
 describe('Test playTurn() function', () => {
 
