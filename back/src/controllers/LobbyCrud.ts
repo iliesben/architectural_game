@@ -3,6 +3,7 @@ import ILobby from '../models/ILobby'
 import IPlayer from '../models/IPlayer'
 import { GameResolution } from '../services/GameResolution'
 
+// TODO gérer la déconnexion du client comme ça je n'oublie pas
 export class LobbyCrud {
 
   private static lobbies: ILobby[] = []
