@@ -2,7 +2,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ChooseGame } from "../components/Container/Game/Choose.container";
-import { WaitingImg } from "../components/Image/Waiting.image";
+import { OverLimitImg, WaitingImg } from "../components/Image/Waiting.image";
 import { GameColumn } from "../components/Container/Game/ColumnGame.container";
 import { ArenaGame } from "../components/Container/Game/ArenaGame.container";
 import { PlayerGame } from "../components/Container/Game/PlayerGame.container";
@@ -93,51 +93,59 @@ export const Game = () => {
 
   return (
     <>
-      <Heading className="text-xl">
-        {currentPlayer && !otherPlayer && <div onClick={() => { navigator.clipboard.writeText(lobbyId) }} className="cursor-pointer">Clique pour copier le lien !</div>}
-        { (currentPlayer && otherPlayer) &&
-            (!isRunning
-              ? currentPlayer.id === "player1"
-                ? <div className="text-teal-300 underline cursor-pointer" onClick={startGame}>Lancez une partie !</div>
-                : <div>C'est au premier joueur de lancer !</div>
-              : <div>Choisissez un élément: ( {seconds} s)</div>
-            )
-        }
-      </Heading>
-      <GameContainer className="flex flex-row">
-        <GameColumn>
-          <PlayerGame player={currentPlayer}/>
-        </GameColumn>
-        <GameColumn column="half" className="flex justify-center">
-          {
-            (currentPlayer && otherPlayer)
-              ? (
-                isRunning
-                  ?
-                   <ChooseGame onClick={getElement} />
-                  : (currentPlayer.currentChoice && otherPlayer.currentChoice)
-                    ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
-                    : <WaitingImg />
+      {(currentPlayer === undefined) ? 
+      <>
+        <OverLimitImg /><br/>Vous ne pouvez pas rejoindre cette room
+      </>:      
+      <>
+        <Heading className="text-xl">
+            {currentPlayer && !otherPlayer && <div onClick={() => { navigator.clipboard.writeText(lobbyId) }} className="cursor-pointer">Clique pour copier le lien !</div>}
+            { (currentPlayer && otherPlayer) &&
+                (!isRunning
+                ? currentPlayer.id === "player1"
+                    ? <div className="text-teal-300 underline cursor-pointer" onClick={startGame}>Lancez une partie !</div>
+                    : <div>C'est au premier joueur de lancer !</div>
+                : <div>Choisissez un élément: ( {seconds} s)</div>
                 )
-              : <WaitingImg />
-          }
-        </GameColumn>
-        <GameColumn>
-          <PlayerGame player={otherPlayer} />
-        </GameColumn>
-      </GameContainer>
-      <ButtonContainer>
-        <ButtonLink
-          link="/"
-          label="Quitter la partie"
-          color="gray"
-          opacity="00"
-          onClick={() => socket.emit('leave room', lobbyId) }
-        />
-      </ButtonContainer>
+            }
+        </Heading>
+        <GameContainer className="flex flex-row">
+            <GameColumn>
+            <PlayerGame player={currentPlayer}/>
+            </GameColumn>
+            <GameColumn column="half" className="flex justify-center">
+            {
+                (currentPlayer && otherPlayer)
+                ? (
+                    isRunning
+                    ?
+                    <ChooseGame onClick={getElement} />
+                    : (currentPlayer.currentChoice && otherPlayer.currentChoice)
+                        ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
+                        : <WaitingImg />
+                    )
+                : <WaitingImg />
+            }
+            </GameColumn>
+            <GameColumn>
+            <PlayerGame player={otherPlayer} />
+            </GameColumn>
+        </GameContainer>
+        <ButtonContainer>
+            <ButtonLink
+            link="/"
+            label="Quitter la partie"
+            color="gray"
+            opacity="00"
+            onClick={() => socket.emit('leave room', lobbyId) }
+            />
+        </ButtonContainer>
+        </> 
+      }
     </>
   );
 }
+
 
 const Heading = styled.div`
   margin: 2rem;
