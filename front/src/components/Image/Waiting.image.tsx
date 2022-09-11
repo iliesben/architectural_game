@@ -7,6 +7,12 @@ export const WaitingImg = () => (
   </WaitingContainer>
 );
 
+export const OverLimitImg = () => (
+  <WaitingContainer>
+    <img src="/src/assets/cry.gif" />
+  </WaitingContainer>
+);
+
 const WaitingContainer = styled.div`
   position: relative;
 `;
