@@ -2,7 +2,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Choose } from "../components/Choose";
-import { Waiting } from "../components/Waiting";
+import { OverLimit, Waiting } from "../components/Waiting";
 import { GameColumn } from "../components/Game/GameColumn";
 import { ContainerArena } from "../components/Container/ContainerArena";
 import { ContainerPlayer } from "../components/Container/ContainerPlayer";
@@ -98,48 +98,47 @@ export const Game = () => {
 
   return (
     <>
+      {(currentPlayer === undefined) ? 
+      <>
+        <OverLimit /><br/>Vous ne pouvez pas rejoindre cette room
+      </>:      
+      <>
       <Heading className="text-xl">
-        { currentPlayer && !otherPlayer && <div>Envoyer le lien !</div>}
-        { (currentPlayer && otherPlayer) &&
-            (!isRunning
-              ? currentPlayer.id === "player1"
-                ? <div className="text-teal-300 underline cursor-pointer" onClick={startGame}>Lancez une partie !</div>
-                : <div>C'est au premier joueur de lancer !</div>
-              : <div>Choisissez un élément: ( {seconds} s)</div>
-            )
-        }
-      </Heading>
-      <GameContainer className="flex flex-row">
-        <GameColumn>
-          <ContainerPlayer player={currentPlayer}/>
-        </GameColumn>
-        <GameColumn column="half" className="flex justify-center">
-          {
-            (currentPlayer && otherPlayer)
-              ? (
-                isRunning
-                  ?
-                   <Choose onClick={getElement} />
-                  : (currentPlayer.currentChoice && otherPlayer.currentChoice)
-                    ? <ContainerArena currentPlayer={currentPlayer} otherPlayer={otherPlayer} currentWinner={currentPlayer.currentWinner} />
-                    : <Waiting />
-                )
-              : <Waiting />
-          }
-        </GameColumn>
-        <GameColumn>
-          <ContainerPlayer player={otherPlayer} />
-        </GameColumn>
-      </GameContainer>
-      <ButtonContainer>
-        <ButtonLink
-          link="/"
-          text="Quitter la partie"
-          color="gray"
-          opacity="00"
-          //onClick={() => { socket.emit('leave room', "64f134c7-385e-4df6-84f4-14b61118ae72") }}
-        />
-      </ButtonContainer>
+              {currentPlayer && !otherPlayer && <div>Envoyer le lien !</div>}
+              {(currentPlayer && otherPlayer) &&
+                  (!isRunning
+                      ? currentPlayer.id === "player1"
+                          ? <div className="text-teal-300 underline cursor-pointer" onClick={startGame}>Lancez une partie !</div>
+                          : <div>C'est au premier joueur de lancer !</div>
+                      : <div>Choisissez un élément: ({seconds} s)</div>
+                  )}
+          </Heading><GameContainer className="flex flex-row">
+                  <GameColumn>
+                      <ContainerPlayer player={currentPlayer} />
+                  </GameColumn>
+                  <GameColumn column="half" className="flex justify-center">
+                      {(currentPlayer && otherPlayer)
+                          ? (
+                              isRunning
+                                  ?
+                                  <Choose onClick={getElement} />
+                                  : (currentPlayer.currentChoice && otherPlayer.currentChoice)
+                                      ? <ContainerArena currentPlayer={currentPlayer} otherPlayer={otherPlayer} currentWinner={currentPlayer.currentWinner} />
+                                      : <Waiting />
+                          )
+                          : <Waiting />}
+                  </GameColumn>
+                  <GameColumn>
+                      <ContainerPlayer player={otherPlayer} />
+                  </GameColumn>
+              </GameContainer><ButtonContainer>
+                  <ButtonLink
+                      link="/"
+                      text="Quitter la partie"
+                      color="gray"
+                      opacity="00" />
+              </ButtonContainer></> 
+      }
     </>
   );
 }

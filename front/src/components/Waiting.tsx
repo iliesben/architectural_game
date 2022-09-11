@@ -9,6 +9,14 @@ export const Waiting = () => {
   );
 };
 
+export const OverLimit = () => {
+  return (
+    <WaitingContainer>
+      <ArenaImg src="/src/assets/cry.gif" />
+    </WaitingContainer>
+  );
+};
+
 const WaitingContainer = styled.div`
   position: relative;
 `;
