@@ -1,6 +1,10 @@
+import { ElementType } from "@/types/game.type";
+
 export class IPlayer {
-    ip?: string
-    name?: string;
-    nbWin?: number;
-    currentChoice?: string
-} 
+  id?: string
+  ip?: string
+  name?: string;
+  nbWin?: number;
+  currentChoice?: ElementType
+  currentWinner?: string
+}

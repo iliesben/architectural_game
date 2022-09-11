@@ -8,7 +8,7 @@ interface Props{
 export const Arena = ({ children }: Props) => {
   return (
     <ArenaContainer>
-      <ArenaImg src="src/assets/arena/arena.webp" />
+      <ArenaImg src="/src/assets/arena/arena.webp" />
       {children}
     </ArenaContainer>
   );

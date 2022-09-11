@@ -1,46 +1,53 @@
-import React, { useState } from "react";
+import { joinGame } from "@/services/game.service";
+import React, { MouseEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ButtonForm } from "../Button/ButtonForm";
 import { InputForm } from "../Input/InputForm";
 
 export const FormJoin = () => {
-  const [pseudo, setPseudo] = useState("");
-  const [room, setRoom] = useState("");
+  const navigate = useNavigate()
 
-  const handleChangePseudo = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setPseudo(e.target.value);
-  };
 
-  const handleChangeRoom = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setRoom(e.target.value);
-  };
+  const [name, setName] = useState<string>("");
+  const [lobbyId, setLobbyId] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    pseudo && room ? alert("Ok form") : alert("Erreur form");
-    console.log("Pseudo", pseudo);
-    console.log("Room", room);
+  const handleChangeName = (e: MouseEvent<HTMLInputElement>) => setName((e.target as HTMLInputElement).value);
+
+  const handleChangeLobbyId = (e: MouseEvent<HTMLInputElement>) => setLobbyId((e.target as HTMLInputElement).value);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!name || !lobbyId) return
+
+    const lobby = await joinGame({
+      lobbyId: lobbyId,
+      name,
+    })
+    if (!lobby) return
+    const { player } = lobby
+
+    return navigate("/game/" + lobbyId,
+      {
+        state: { lobbyId, player }
+      }
+    )
   };
 
   return (
     <form
       className="flex flex-col justify-center items-center mt-20 w-11/12"
-      onSubmit={(e) => {
-        handleSubmit(e);
-      }}
+      onSubmit={handleSubmit}
     >
       <InputForm
-        placeholder="Pseudo"
-        value={pseudo}
-        handle={(e: any) => {
-          handleChangePseudo(e);
-        }}
+        placeholder="Nom du player"
+        value={name}
+        handle={handleChangeName}
       />
       <InputForm
         placeholder="Lien de la salle"
-        value={room}
-        handle={(e: any) => {
-          handleChangeRoom(e);
-        }}
+        value={lobbyId}
+        handle={handleChangeLobbyId}
       />
       <ButtonForm type="submit" value="Go!" />
     </form>
