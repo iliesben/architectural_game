@@ -1,16 +1,16 @@
-import { IPlayer } from "@/schema/IPlayer";
-import React, { FormEvent, MouseEvent, useState } from "react";
-import { ButtonForm } from "../Button/ButtonForm";
-import { InputForm } from "../Input/InputForm";
+import React, { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { SubmitButton } from "../Button/Submit.button";
+import { TextInput } from "../Input/Text.input";
 import { createGame } from "@/services/game.service";
 import { useNavigate } from "react-router-dom";
 
-export const FormCreate = () => {
+export const CreateForm = () => {
 
   const navigate = useNavigate()
+
   const [name, setName] = useState<string>("");
 
-  const handleChangeName = (e: MouseEvent<HTMLInputElement>) => setName((e.target as HTMLInputElement).value);
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => setName((e.target as HTMLInputElement).value);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,6 +21,7 @@ export const FormCreate = () => {
       name
     })
     if (!lobby) return
+
     const { lobbyId, player } = lobby
 
     return navigate("/game/" + lobbyId,
@@ -35,12 +36,12 @@ export const FormCreate = () => {
       className="flex flex-col justify-center items-center mt-20 w-11/12"
       onSubmit={handleSubmit}
     >
-      <InputForm
+      <TextInput
         placeholder="Nom du player"
         value={name}
-        handle={handleChangeName}
+        onChange={handleChangeName}
       />
-      <ButtonForm type="submit" value="Go!" />
+      <SubmitButton value="Go!" />
     </form>
   );
 };

@@ -1,15 +1,16 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { ElementType } from "@/types/game.type";
 import styled from "styled-components";
 import { upperFirst} from 'lodash';
 
 interface Props {
   type: ElementType;
+  style?: CSSProperties
 }
 
-export const Attack = ({ type }: Props) => <AttackImg src={`/src/assets/attack/attack${upperFirst(type)}.gif`} />;
+export const AttackImg = ({ type, style }: Props) => <Img style={style} src={`/src/assets/attack/attack${upperFirst(type)}.gif`} />;
 
-const AttackImg = styled.img`
+const Img = styled.img`
   position: absolute;
   top: 0px;
   transform: scale(2);

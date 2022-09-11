@@ -1,6 +1,4 @@
-// recupere le socket si on rejoint, sinon créer un
 import React from "react";
-import styled from "styled-components";
 
 interface Props {
   children: string | JSX.Element | JSX.Element[];

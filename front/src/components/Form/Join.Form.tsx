@@ -1,19 +1,18 @@
+import React, { ChangeEvent, useState } from "react";
 import { joinGame } from "@/services/game.service";
-import React, { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ButtonForm } from "../Button/ButtonForm";
-import { InputForm } from "../Input/InputForm";
+import { SubmitButton } from "../Button/Submit.button";
+import { TextInput } from "../Input/Text.input";
 
-export const FormJoin = () => {
+export const JoinForm = () => {
+
   const navigate = useNavigate()
-
 
   const [name, setName] = useState<string>("");
   const [lobbyId, setLobbyId] = useState("");
 
-  const handleChangeName = (e: MouseEvent<HTMLInputElement>) => setName((e.target as HTMLInputElement).value);
-
-  const handleChangeLobbyId = (e: MouseEvent<HTMLInputElement>) => setLobbyId((e.target as HTMLInputElement).value);
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => setName((e.target as HTMLInputElement).value);
+  const handleChangeLobbyId = (e: ChangeEvent<HTMLInputElement>) => setLobbyId((e.target as HTMLInputElement).value);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,6 +24,7 @@ export const FormJoin = () => {
       name,
     })
     if (!lobby) return
+
     const { player } = lobby
 
     return navigate("/game/" + lobbyId,
@@ -39,17 +39,17 @@ export const FormJoin = () => {
       className="flex flex-col justify-center items-center mt-20 w-11/12"
       onSubmit={handleSubmit}
     >
-      <InputForm
+      <TextInput
         placeholder="Nom du player"
         value={name}
-        handle={handleChangeName}
+        onChange={handleChangeName}
       />
-      <InputForm
+      <TextInput
         placeholder="Lien de la salle"
         value={lobbyId}
-        handle={handleChangeLobbyId}
+        onChange={handleChangeLobbyId}
       />
-      <ButtonForm type="submit" value="Go!" />
+      <SubmitButton value="Go!" />
     </form>
   );
 };

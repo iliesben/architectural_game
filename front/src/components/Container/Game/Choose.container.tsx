@@ -5,7 +5,8 @@ import { ElementType } from "@/types/game.type";
 interface Props {
   onClick: (e: ElementType) => void;
 }
-export const Choose = (props: Props) => {
+
+export const ChooseGame = (props: Props) => {
 
   const ref = useRef<HTMLDivElement | null>(null)
 

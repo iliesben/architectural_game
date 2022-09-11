@@ -1,4 +1,3 @@
-// recupere le socket si on rejoint, sinon créer un
 import React from "react";
 
 interface Props {

@@ -1,6 +1,6 @@
+import { IPlayer } from '@/schema/IPlayer';
 import { Dispatch, SetStateAction } from 'react';
 import { io, Socket } from 'socket.io-client';
-// import { DefaultEventsMap, EventNames, EventParams, EventsMap, Emitter } from "@socket.io/component-emitter";
 
 let socket: Socket;
 
@@ -19,5 +19,5 @@ export const joinSocket = (lobbyId: string): Socket => {
   return socket.emit('join room', lobbyId)
 }
 
-export const currentLobbySocket = (setPlayers: Dispatch<SetStateAction<any[]>>) =>
-  socket.on('current lobby', (_players: any[]) => setPlayers(_players))
+export const currentLobbySocket = (setPlayers: Dispatch<SetStateAction<IPlayer[]>>) =>
+  socket.on('current lobby', (_players: IPlayer[]) => setPlayers(_players))

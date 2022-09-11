@@ -1,19 +1,19 @@
 // recupere le socket si on rejoint, sinon créer un
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Choose } from "../components/Choose";
-import { Waiting } from "../components/Waiting";
-import { GameColumn } from "../components/Game/GameColumn";
-import { ContainerArena } from "../components/Container/ContainerArena";
-import { ContainerPlayer } from "../components/Container/ContainerPlayer";
-import { io } from "socket.io-client";
+import { ChooseGame } from "../components/Container/Game/Choose.container";
+import { WaitingImg } from "../components/Image/Waiting.image";
+import { GameColumn } from "../components/Container/Game/ColumnGame.container";
+import { ArenaGame } from "../components/Container/Game/ArenaGame.container";
+import { PlayerGame } from "../components/Container/Game/PlayerGame.container";
 import { IPlayer } from "@/schema/IPlayer";
-import { ButtonLink } from "@/components/Button/ButtonLink";
+import { ButtonLink } from "@/components/Button/Link.button";
 import { ElementType } from "@/types/game.type";
-import { Location, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { SocketContext } from '@/context/socket';
 import { useTimer } from 'react-timer-hook';
 import * as _ from 'lodash';
+
 interface LocationState {
   player: IPlayer;
   lobbyId: string
@@ -27,9 +27,6 @@ export const Game = () => {
 
   const socket = useContext(SocketContext);
   if (!socket) return
-
-  // const socketRef = useRef();
-  // socketRef.current = socket;
 
   const [currentPlayer, setCurrentPlayer] = useState<IPlayer>(playerState)
   const [otherPlayer, setOtherPlayer] = useState<undefined | IPlayer>()
@@ -53,8 +50,6 @@ export const Game = () => {
       if (player.id === currentPlayer.id) setCurrentPlayer(player)
       else setOtherPlayer(player)
     })
-    // setCurrentPlayer(_players.find(player => player.id === currentPlayer.id) as IPlayer)
-    // setOtherPlayer(_.find(_players, { id: "player2" }))
   }
 
 
@@ -99,7 +94,7 @@ export const Game = () => {
   return (
     <>
       <Heading className="text-xl">
-        { currentPlayer && !otherPlayer && <div>Envoyer le lien !</div>}
+        {currentPlayer && !otherPlayer && <div onClick={() => { navigator.clipboard.writeText(lobbyId) }} className="cursor-pointer">Clique pour copier le lien !</div>}
         { (currentPlayer && otherPlayer) &&
             (!isRunning
               ? currentPlayer.id === "player1"
@@ -111,7 +106,7 @@ export const Game = () => {
       </Heading>
       <GameContainer className="flex flex-row">
         <GameColumn>
-          <ContainerPlayer player={currentPlayer}/>
+          <PlayerGame player={currentPlayer}/>
         </GameColumn>
         <GameColumn column="half" className="flex justify-center">
           {
@@ -119,16 +114,16 @@ export const Game = () => {
               ? (
                 isRunning
                   ?
-                   <Choose onClick={getElement} />
+                   <ChooseGame onClick={getElement} />
                   : (currentPlayer.currentChoice && otherPlayer.currentChoice)
-                    ? <ContainerArena currentPlayer={currentPlayer} otherPlayer={otherPlayer} currentWinner={currentPlayer.currentWinner} />
-                    : <Waiting />
+                    ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
+                    : <WaitingImg />
                 )
-              : <Waiting />
+              : <WaitingImg />
           }
         </GameColumn>
         <GameColumn>
-          <ContainerPlayer player={otherPlayer} />
+          <PlayerGame player={otherPlayer} />
         </GameColumn>
       </GameContainer>
       <ButtonContainer>
@@ -137,7 +132,7 @@ export const Game = () => {
           text="Quitter la partie"
           color="gray"
           opacity="00"
-          //onClick={() => { socket.emit('leave room', "64f134c7-385e-4df6-84f4-14b61118ae72") }}
+          onClick={() => socket.emit('leave room', lobbyId) }
         />
       </ButtonContainer>
     </>
@@ -154,4 +149,4 @@ const ButtonContainer = styled.div`
   text-align: center;
 `;
 
-const GameContainer = styled.div``;
+const GameContainer= styled.div``;

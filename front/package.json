@@ -44,6 +44,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
+    "react-spring": "^9.5.3",
+    "react-timer-hook": "^3.0.5",
     "socket.io-client": "^4.5.2",
     "styled-components": "^5.3.5",
     "uuid": "^9.0.0",
