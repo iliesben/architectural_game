@@ -2,7 +2,7 @@ import { IPlayer } from "@/schema/IPlayer";
 import axios from "axios";
 import { IRoom } from "@/schema/IRoom";
 
-const api_path = 'http://localhost:3000'
+const api_path = import.meta.env.VITE_API_URL
 
 interface Lobby {
   lobbyId: string
