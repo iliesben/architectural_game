@@ -60,9 +60,17 @@ export const Game = () => {
     })
   }
 
-  const handleMessage = (messages: IMessage[]) => setMessages(messages)
+  const handleMessage = (messages: IMessage[]) => {
+    setMessages(messages)
+
+    if (!messagesContainerRef.current) return
+
+    messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+  }
 
   const formRef = useRef<HTMLFormElement | null>(null)
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null)
+
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -170,9 +178,9 @@ export const Game = () => {
 
           <form ref={formRef} className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10" onSubmit={sendMessage}>
             <div className="flex flex-col flex-grow w-full max-w-xl bg-zinc-700 shadow-xl rounded-lg overflow-hidden">
-              <div className="flex flex-col flex-grow h-0 p-4 overflow-auto space-y-4">
+              <div ref={messagesContainerRef} className="flex flex-col flex-grow h-0 p-4 overflow-auto space-y-4">
                 {messages.map((message, index) => (
-                  <div key={index} className="flex w-full mt-2 space-x-3 max-w-xs">
+                  <div key={index} className={`flex w-full mt-2 space-x-3 max-w-xs  ml-auto ${(message.author === currentPlayer.name) && "justify-end"}`}>
                     <div>
                       <p className="text-sm font-bold text-gray-300 leading-none mb-2">{message.author}</p>
                       <div className="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
