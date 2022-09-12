@@ -9,7 +9,7 @@ export default class ILobby {
 
   public uuid: string = uuidv4()
   public players: IPlayers
-  public url: string = `http://localhost:3030/lobby/${this.uuid}`
+  public url: string = `https://poke-shihumi.herokuapp.com/lobby/${this.uuid}`
 
   constructor(players: IPlayers) {
     this.players = players
