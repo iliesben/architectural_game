@@ -91,14 +91,14 @@ export class LobbyCrud {
 
   public static async join(req: Request, res: Response) {
     try {
-      const lobbyId = req.body.lobbyId
+      const lobbyId = req.body.lobbyId || req.params.lobbyId
       const currentLobby = LobbyCrud.lobbies[lobbyId]
       const currentLobbyLength = Object.keys(currentLobby.players).length
 
       if (currentLobby && currentLobbyLength < 2) {
         const newPlayer = new IPlayer(
           req.socket.remoteAddress as string,
-          req.body.name,
+          req.body.name || req.body.playerName,
           `player${currentLobbyLength + 1}`
         )
 
@@ -110,13 +110,14 @@ export class LobbyCrud {
         ? res.status(404).send({ message: 'error', error: 'This lobby cannot contain more players' })
         : res.status(404).send({ message: 'error', error: 'Lobby not found' })
     } catch (error) {
+      console.log(error)
       res.send({ message: 'error', error })
     }
   }
 
   public static async quit(req: Request, res: Response) {
     try {
-      const lobbyId = req.params.lobbyId
+      const lobbyId = req.body.lobbyId || req.params.lobbyId
       const currentLobby = LobbyCrud.lobbies[lobbyId]
 
       if (currentLobby) {
