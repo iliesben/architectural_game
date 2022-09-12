@@ -137,7 +137,7 @@ export const Game = () => {
             label="Quitter la partie"
             color="gray"
             opacity="00"
-            onClick={() => socket.emit('leave room', lobbyId) }
+            onClick={() => socket.emit('leave room', { lobbyId, playerId: currentPlayer.id }) }
             />
         </ButtonContainer>
         </> 
