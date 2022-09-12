@@ -38,20 +38,19 @@ export const Game = () => {
   const [currentPlayer, setCurrentPlayer] = useState<IPlayer>(playerState)
   const [otherPlayer, setOtherPlayer] = useState<undefined | IPlayer>()
   const [messages, setMessages] = useState<IMessage[]>([])
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false)
 
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
   const { seconds, isRunning, start, restart } = useTimer({ expiryTimestamp, autoStart: false, onExpire: () => send() });
 
   const handlePlayer = useCallback((_players: IPlayer[]) => {
-    console.log('_players :', _players)
 
     const player = _players.find(player => player.id !== currentPlayer.id)
     setOtherPlayer(player);
   }, []);
 
   const handleWinner = (_players: IPlayer[] | null) => {
-    console.log('win _players :', _players)
     if (!_players) return
 
     _players.map(player => {
@@ -85,7 +84,6 @@ export const Game = () => {
 
   useEffect(() => {
     const { connected } = socket.emit('join room', lobbyId)
-    console.log('connected', connected)
     if (!connected) return
 
     socket.on('current lobby', handlePlayer);
@@ -126,7 +124,7 @@ export const Game = () => {
   const playersIn = currentPlayer && otherPlayer
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       {(currentPlayer === undefined) ?
         <>
           <OverLimitImg /><br />Vous ne pouvez pas rejoindre cette room
@@ -176,31 +174,48 @@ export const Game = () => {
             />
           </ButtonContainer>
 
-          <form ref={formRef} className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10" onSubmit={sendMessage}>
-            <div className="flex flex-col flex-grow w-full max-w-xl bg-zinc-700 shadow-xl rounded-lg overflow-hidden">
-              <div ref={messagesContainerRef} className="flex flex-col flex-grow h-0 p-4 overflow-auto space-y-4">
-                {messages.map((message, index) => (
-                  <div key={index} className={`flex w-full mt-2 space-x-3 max-w-xs  ml-auto ${(message.author === currentPlayer.name) && "justify-end"}`}>
-                    <div>
-                      <p className="text-sm font-bold text-gray-300 leading-none mb-2">{message.author}</p>
-                      <div className="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
-                        <p className="text-md">{message.content}</p>
+          { isChatOpen && 
+            <form
+              ref={formRef}
+              className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10"
+              style={{ position: 'absolute', bottom: '0px' }}
+              onSubmit={sendMessage}
+            >
+              <div className="flex flex-col flex-grow w-full max-w-xl bg-zinc-700 shadow-xl rounded-lg overflow-hidden">
+                <div ref={messagesContainerRef} className="flex flex-col flex-grow h-0 p-4 overflow-auto space-y-4">
+                  {messages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={`flex w-full mt-2 space-x-3 ml-auto ${(message.author === currentPlayer.name) && "justify-end"}`}
+                    >
+                      <div>
+                        <p className="text-sm font-bold text-gray-300 leading-none mb-2">{message.author}</p>
+                        <div className="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                          <p className="text-md">{message.content}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <div className="bg-gray-300 p-4">
+                  <input className="flex items-center h-10 w-full rounded px-3 text-sm" type="text" name="currentMessage" placeholder="Type your message…"  />
+                  <button className="mt-5 w-full" type="submit" value="Envoyer!">Envoyer !</button>
+                </div>
               </div>
 
-              <div className="bg-gray-300 p-4">
-                <input className="flex items-center h-10 w-full rounded px-3 text-sm" type="text" name="currentMessage" placeholder="Type your message…"  />
-                <input className="mt-5 w-full" type="submit" value="Envoyer!" />
-              </div>
-            </div>
-
-          </form>
+            </form>
+          }
+          
+          <button
+            onClick={() => setIsChatOpen(!isChatOpen)}
+            style={{ position: 'absolute', bottom: '-10px', left: '30px' }}
+          >
+            <p>{isChatOpen ? 'Fermer le chat' : 'Ouvrir le chat'}</p>
+          </button>
         </>
       }
-    </>
+    </div>
   );
 }
 
