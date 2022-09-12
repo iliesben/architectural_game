@@ -79,7 +79,11 @@ export class LobbyCrud {
 
   public static async create(req: Request, res: Response) {
     try {
-      const player = new IPlayer(req.socket.remoteAddress as string, req.body.name, 'player1')
+      const player = new IPlayer(
+        req.socket.remoteAddress as string,
+        req.body.name || req.body.playerName,
+        'player1'
+      )
       const newLobby = new ILobby({ [player.id]: player })
       LobbyCrud.lobbies[newLobby.uuid] = newLobby
 
