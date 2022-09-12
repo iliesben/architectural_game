@@ -8,7 +8,7 @@ interface Props {
   style?: CSSProperties
 }
 
-export const AttackImg = ({ type, style }: Props) => <Img style={style} src={`/src/assets/attack/attack${upperFirst(type)}.gif`} />;
+export const AttackImg = ({ type, style }: Props) => <Img style={style} src={`/assets/attack/attack${upperFirst(type)}.gif`} />;
 
 const Img = styled.img`
   position: absolute;

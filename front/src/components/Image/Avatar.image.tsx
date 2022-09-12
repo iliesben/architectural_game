@@ -8,7 +8,7 @@ interface Props {
   side: "front" | "back";
 }
 
-export const AvatarImg = ({ type, side }: Props) => <Img src={`/src/assets/avatar/avatar${upperFirst(side)}${upperFirst(type)}.gif`} />;
+export const AvatarImg = ({ type, side }: Props) => <Img src={`/assets/avatar/avatar${upperFirst(side)}${upperFirst(type)}.gif`} />;
 
 const Img = styled.img`
   opacity: 1;

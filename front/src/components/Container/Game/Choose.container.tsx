@@ -24,7 +24,7 @@ export const ChooseGame = (props: Props) => {
 
   return (
     <ArenaContainer>
-      <img src="/src/assets/choose.png" />
+      <img src="/assets/choose.png" />
       <div className="absolute top-0 w-full flex justify-around" ref={ref}>
         <ChooseType color="emerald" data-element="grass" onClick={setElement}>
           Plante

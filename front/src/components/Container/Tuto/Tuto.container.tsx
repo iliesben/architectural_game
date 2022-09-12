@@ -8,9 +8,9 @@ export const TutoContainer = () => (
       <Content text="Bon vas-y je t'explique rapidement." />
       <Content text="En gros tu as trois personnages :" />
       <div className="flex flex-row justify-around items-center mt-10">
-        <img src="src/assets/water.gif" />
-        <img src="src/assets/fire.gif" />
-        <img src="src/assets/grass.gif" />
+        <img src="/assets/water.gif" />
+        <img src="/assets/fire.gif" />
+        <img src="/assets/grass.gif" />
       </div>
     </div>
     <div className="max-w-lg my-20 mx-10">

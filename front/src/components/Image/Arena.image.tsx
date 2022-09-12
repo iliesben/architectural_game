@@ -7,7 +7,7 @@ interface Props {
 
 export const ArenaImg = ({ children }: Props) => (
   <ArenaContainer>
-    <img src="/src/assets/arena/arena.webp" />
+    <img src="/assets/arena/arena.webp" />
     {children}
   </ArenaContainer>
 );

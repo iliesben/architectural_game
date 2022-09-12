@@ -3,13 +3,13 @@ import styled from "styled-components";
 
 export const WaitingImg = () => (
   <WaitingContainer>
-    <img src="/src/assets/waiting.gif" />
+    <img src="/assets/waiting.gif" />
   </WaitingContainer>
 );
 
 export const OverLimitImg = () => (
   <WaitingContainer>
-    <img src="/src/assets/cry.gif" />
+    <img src="/assets/cry.gif" />
   </WaitingContainer>
 );
 
