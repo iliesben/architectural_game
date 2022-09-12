@@ -62,6 +62,7 @@ export const Game = () => {
 
   const handleMessage = (messages: IMessage[]) => setMessages(messages)
 
+  const formRef = useRef<HTMLFormElement | null>(null)
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -70,6 +71,8 @@ export const Game = () => {
       playerName: currentPlayer.name,
       content: (e.target as HTMLFormElement).currentMessage.value
     })
+
+    formRef.current?.reset()
   }
 
   useEffect(() => {
@@ -165,15 +168,15 @@ export const Game = () => {
             />
           </ButtonContainer>
 
-          <form className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10" onSubmit={sendMessage}>
+          <form ref={formRef} className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10" onSubmit={sendMessage}>
             <div className="flex flex-col flex-grow w-full max-w-xl bg-zinc-700 shadow-xl rounded-lg overflow-hidden">
               <div className="flex flex-col flex-grow h-0 p-4 overflow-auto space-y-4">
                 {messages.map((message, index) => (
                   <div key={index} className="flex w-full mt-2 space-x-3 max-w-xs">
                     <div>
-                      <p className="text-lg font-bold text-gray-300 leading-none mb-2">{message.author}</p>
+                      <p className="text-sm font-bold text-gray-300 leading-none mb-2">{message.author}</p>
                       <div className="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
-                        <p className="text-sm">{message.content}</p>
+                        <p className="text-md">{message.content}</p>
                       </div>
                     </div>
                   </div>
