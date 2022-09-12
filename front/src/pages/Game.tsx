@@ -13,10 +13,17 @@ import { useLocation } from "react-router-dom";
 import { SocketContext } from '@/context/socket';
 import { useTimer } from 'react-timer-hook';
 import * as _ from 'lodash';
+import { TextInput } from "@/components/Input/Text.input";
+import { SubmitButton } from "@/components/Button/Submit.button";
 
 interface LocationState {
   player: IPlayer;
   lobbyId: string
+}
+
+interface IMessage {
+  author: string,
+  content: string
 }
 
 export const Game = () => {
@@ -30,6 +37,7 @@ export const Game = () => {
 
   const [currentPlayer, setCurrentPlayer] = useState<IPlayer>(playerState)
   const [otherPlayer, setOtherPlayer] = useState<undefined | IPlayer>()
+  const [messages, setMessages] = useState<IMessage[]>([])
 
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
@@ -52,6 +60,17 @@ export const Game = () => {
     })
   }
 
+  const handleMessage = (messages: IMessage[]) => setMessages(messages)
+
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    socket.emit('send message', {
+      lobbyId,
+      playerName: currentPlayer.name,
+      content: (e.target as HTMLFormElement).currentMessage.value
+    })
+  }
 
   useEffect(() => {
     const { connected } = socket.emit('join room', lobbyId)
@@ -61,11 +80,13 @@ export const Game = () => {
     socket.on('current lobby', handlePlayer);
     socket.on('is starting', startGameTimer)
     socket.on('winner', handleWinner)
+    socket.on('current lobby messages', handleMessage)
 
     return () => {
       socket.off('current lobby', handlePlayer);
       socket.off('is starting')
       socket.off('winner')
+      socket.off('current lobby messages')
     };
   }, [socket, handlePlayer]);
 
@@ -114,20 +135,20 @@ export const Game = () => {
           </Heading>
           <GameContainer className="flex flex-row">
             <GameColumn>
-              <PlayerGame player={currentPlayer}/>
+              <PlayerGame player={currentPlayer} />
             </GameColumn>
             <GameColumn column="half" className="flex justify-center">
-            {
-              playersIn
-                ? (
-                  isRunning
-                    ?
-                    <ChooseGame onClick={getElement} />
-                    : (currentPlayer.currentChoice && otherPlayer.currentChoice)
-                      ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
-                      : <WaitingImg />
-                )
-                : <WaitingImg />
+              {
+                playersIn
+                  ? (
+                    isRunning
+                      ?
+                      <ChooseGame onClick={getElement} />
+                      : (currentPlayer.currentChoice && otherPlayer.currentChoice)
+                        ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
+                        : <WaitingImg />
+                  )
+                  : <WaitingImg />
               }
             </GameColumn>
             <GameColumn>
@@ -140,9 +161,32 @@ export const Game = () => {
               label="Quitter la partie"
               color="gray"
               opacity="00"
-              onClick={() => socket.emit('leave room', { lobbyId, playerId: currentPlayer.id }) }
+              onClick={() => socket.emit('leave room', { lobbyId, playerId: currentPlayer.id })}
             />
           </ButtonContainer>
+
+          <form className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10" onSubmit={sendMessage}>
+            <div className="flex flex-col flex-grow w-full max-w-xl bg-zinc-700 shadow-xl rounded-lg overflow-hidden">
+              <div className="flex flex-col flex-grow h-0 p-4 overflow-auto space-y-4">
+                {messages.map((message, index) => (
+                  <div key={index} className="flex w-full mt-2 space-x-3 max-w-xs">
+                    <div>
+                      <p className="text-lg font-bold text-gray-300 leading-none mb-2">{message.author}</p>
+                      <div className="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                        <p className="text-sm">{message.content}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-gray-300 p-4">
+                <input className="flex items-center h-10 w-full rounded px-3 text-sm" type="text" name="currentMessage" placeholder="Type your message…"  />
+                <input className="mt-5 w-full" type="submit" value="Envoyer!" />
+              </div>
+            </div>
+
+          </form>
         </>
       }
     </>
