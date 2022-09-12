@@ -110,7 +110,6 @@ export class LobbyCrud {
         ? res.status(404).send({ message: 'error', error: 'This lobby cannot contain more players' })
         : res.status(404).send({ message: 'error', error: 'Lobby not found' })
     } catch (error) {
-      console.log(error)
       res.send({ message: 'error', error })
     }
   }
