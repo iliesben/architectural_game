@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import ILobby from '../models/ILobby'
 import IPlayer from '../models/IPlayer'
+import IMessage from '../models/IMessage'
 import { GameResolution } from '../services/GameResolution'
 import { find, values } from 'lodash'
 
@@ -29,6 +30,7 @@ export class LobbyCrud {
         const currentLobby = LobbyCrud.lobbies[lobbyId]
         if (currentLobby?.players[playerId]) {
           delete currentLobby.players[playerId]
+          LobbyCrud.lobbies[lobbyId] = currentLobby
           sockets.sockets.to(lobbyId).emit('current lobby', values(currentLobby.players));
         }
       })
@@ -56,6 +58,15 @@ export class LobbyCrud {
           sockets.sockets.to(lobbyId).emit('winner', null);
         } else {
           sockets.sockets.to(lobbyId).emit('winner', GameResolution.playTurn(currentLobby.players))};
+      })
+
+      socket.on('send message', ({ lobbyId, playerName, content }: any) => {
+        const currentLobby = LobbyCrud.lobbies[lobbyId]
+        if (currentLobby) {
+          currentLobby.addNewMessage(new IMessage(playerName, content))
+          LobbyCrud.lobbies[lobbyId] = currentLobby
+          sockets.sockets.to(lobbyId).emit('current lobby messages', currentLobby.messages);
+        }
       })
 
       socket.on('disconnect', () => {
