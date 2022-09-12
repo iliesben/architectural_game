@@ -14,7 +14,7 @@ export const TutoContainer = () => (
       </div>
     </div>
     <div className="max-w-lg my-20 mx-10">
-      <Content text="A tour de rôle tu vas devoir choisir un des trois éléments présentés." />
+      <Content text="À tour de rôle tu vas devoir choisir un des trois éléments présentés." />
       <Content text="Au décompte, vos choix vont être révélés. Pour info :" />
       <ul className="mt-10 text-center">
         <List color="red" text="Le feu bat l'herbe" />
