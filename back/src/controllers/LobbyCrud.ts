@@ -24,10 +24,11 @@ export class LobbyCrud {
         }
       });
 
-      socket.on('leave room', (lobbyId: string) => {
+      socket.on('leave room', ({ lobbyId, playerId }: any) => {
         socket.leave(lobbyId)
         const currentLobby = LobbyCrud.lobbies[lobbyId]
-        if (currentLobby) {
+        if (currentLobby?.players[playerId]) {
+          delete currentLobby.players[playerId]
           sockets.sockets.to(lobbyId).emit('current lobby', values(currentLobby.players));
         }
       })
