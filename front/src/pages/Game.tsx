@@ -73,6 +73,8 @@ export const Game = () => {
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if ((e.target as HTMLFormElement).currentMessage.value.trim() === "") return
+
     socket.emit('send message', {
       lobbyId,
       playerName: currentPlayer.name,
@@ -174,7 +176,7 @@ export const Game = () => {
             />
           </ButtonContainer>
 
-          { isChatOpen && 
+          { isChatOpen &&
             <form
               ref={formRef}
               className="flex flex-col items-center justify-center w-screen h-96 text-gray-800 p-10"
@@ -206,7 +208,7 @@ export const Game = () => {
 
             </form>
           }
-          
+
           <button
             onClick={() => setIsChatOpen(!isChatOpen)}
             style={{ position: 'absolute', bottom: '-10px', left: '30px' }}
