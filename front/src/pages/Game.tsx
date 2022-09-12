@@ -22,7 +22,7 @@ interface LocationState {
 export const Game = () => {
 
   const location = useLocation()
-  if (!location.state) return <div className = "text-xl">Repasse par la home frérot</div>
+  if (!location.state) return <div className="text-xl">Repasse par la home frérot</div>
   const { player: playerState, lobbyId } = location.state as LocationState;
 
   const socket = useContext(SocketContext);
@@ -35,14 +35,14 @@ export const Game = () => {
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
   const { seconds, isRunning, start, restart } = useTimer({ expiryTimestamp, autoStart: false, onExpire: () => send() });
 
-  const handlePlayer = useCallback((_players: IPlayer[] ) => {
+  const handlePlayer = useCallback((_players: IPlayer[]) => {
     console.log('_players :', _players)
 
     const player = _players.find(player => player.id !== currentPlayer.id)
     setOtherPlayer(player);
   }, []);
 
-  const thewineris = (_players: IPlayer[] | null) => {
+  const handleWinner = (_players: IPlayer[] | null) => {
     console.log('win _players :', _players)
     if (!_players) return
 
@@ -59,8 +59,8 @@ export const Game = () => {
     if (!connected) return
 
     socket.on('current lobby', handlePlayer);
-    socket.on('is starting', startGameTimer )
-    socket.on('winner', thewineris )
+    socket.on('is starting', startGameTimer)
+    socket.on('winner', handleWinner)
 
     return () => {
       socket.off('current lobby', handlePlayer);
@@ -91,56 +91,59 @@ export const Game = () => {
     })
   }
 
+  const playersIn = currentPlayer && otherPlayer
+
   return (
     <>
-      {(currentPlayer === undefined) ? 
-      <>
-        <OverLimitImg /><br/>Vous ne pouvez pas rejoindre cette room
-      </>:      
-      <>
-        <Heading className="text-xl">
-            {currentPlayer && !otherPlayer && <div onClick={() => { navigator.clipboard.writeText(lobbyId) }} className="cursor-pointer">Clique pour copier le lien !</div>}
-            { (currentPlayer && otherPlayer) &&
-                (!isRunning
+      {(currentPlayer === undefined) ?
+        <>
+          <OverLimitImg /><br />Vous ne pouvez pas rejoindre cette room
+        </>
+        :
+        <>
+          <Heading className="text-xl">
+            {!otherPlayer && <div onClick={() => { navigator.clipboard.writeText(lobbyId) }} className="cursor-pointer">Clique pour copier le lien !</div>}
+            {playersIn &&
+              (!isRunning
                 ? currentPlayer.id === "player1"
-                    ? <div className="text-teal-300 underline cursor-pointer" onClick={startGame}>Lancez une partie !</div>
-                    : <div>C'est au premier joueur de lancer !</div>
+                  ? <div className="text-teal-300 underline cursor-pointer" onClick={startGame}>Lancez une partie !</div>
+                  : <div>C'est au premier joueur de lancer !</div>
                 : <div>Choisissez un élément: ( {seconds} s)</div>
-                )
+              )
             }
-        </Heading>
-        <GameContainer className="flex flex-row">
+          </Heading>
+          <GameContainer className="flex flex-row">
             <GameColumn>
-            <PlayerGame player={currentPlayer}/>
+              <PlayerGame player={currentPlayer}/>
             </GameColumn>
             <GameColumn column="half" className="flex justify-center">
             {
-                (currentPlayer && otherPlayer)
+              playersIn
                 ? (
-                    isRunning
+                  isRunning
                     ?
                     <ChooseGame onClick={getElement} />
                     : (currentPlayer.currentChoice && otherPlayer.currentChoice)
-                        ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
-                        : <WaitingImg />
-                    )
+                      ? <ArenaGame currentPlayer={currentPlayer} otherPlayer={otherPlayer} />
+                      : <WaitingImg />
+                )
                 : <WaitingImg />
-            }
+              }
             </GameColumn>
             <GameColumn>
-            <PlayerGame player={otherPlayer} />
+              <PlayerGame player={otherPlayer} />
             </GameColumn>
-        </GameContainer>
-        <ButtonContainer>
+          </GameContainer>
+          <ButtonContainer>
             <ButtonLink
-            link="/"
-            label="Quitter la partie"
-            color="gray"
-            opacity="00"
-            onClick={() => socket.emit('leave room', { lobbyId, playerId: currentPlayer.id }) }
+              link="/"
+              label="Quitter la partie"
+              color="gray"
+              opacity="00"
+              onClick={() => socket.emit('leave room', { lobbyId, playerId: currentPlayer.id }) }
             />
-        </ButtonContainer>
-        </> 
+          </ButtonContainer>
+        </>
       }
     </>
   );
@@ -157,4 +160,4 @@ const ButtonContainer = styled.div`
   text-align: center;
 `;
 
-const GameContainer= styled.div``;
+const GameContainer = styled.div``;
